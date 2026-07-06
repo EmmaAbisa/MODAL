@@ -1,21 +1,6 @@
-
 (function (global) {
   "use strict";
 
-  /**
-   * Crea y muestra un modal en pantalla.
-   * @param {Object} opciones
-   * @param {string} [opciones.tag]  Etiqueta pequeña arriba (de RESULTADO).
-   * @param {string|number} [opciones.valor]  Valor grande destacado (de 24 años).
-   * @param {string} [opciones.titulo]  Título tipo confirmación/infomarcioon.
-   * @param {string} [opciones.detalle]  Texto pequeño bajo el valor.
-   * @param {string} [opciones.cuerpo] Texto/HTML de cuerpo genérico(uno de ejemplo mio).
-   * @param {Array}  [opciones.botones]  [{texto, tipo, onClick, cerrarAlHacerClick}]
-   * @param {boolean} [opciones.cerrarConOverlay=true]  Cerrar al hacer clic fuera.
-   * @param {boolean} [opciones.cerrarConEsc=true] ///////////´++' Cerrar con tecla ESC(Integracion esta ).
-   * @param {Function} [opciones.alCerrar]  Callback ejecutado al cerrar.
-   * @returns {{cerrar: Function, elemento: HTMLElement}}
-   */
   function mostrar(opciones) {
     opciones = opciones || {};
 
@@ -58,7 +43,6 @@
     overlay.appendChild(box);
     document.body.appendChild(overlay);
 
-    // Forzar reflow antes de animar la entrada (transición vía clase "activo", ese codiog reutilice(REVISAA))
     requestAnimationFrame(() => overlay.classList.add("activo"));
 
     function onKeyDown(e) {
@@ -94,13 +78,11 @@
       });
     }
 
-    // Accesibilidad: en este es foco inicial dentro del modal
     box.querySelector(".modal-cerrar").focus();
 
     return { cerrar, elemento: overlay };
   }
 
-  /** Cierra todos los modales activos en pantalla. */
   function cerrarTodos() {
     document.querySelectorAll(".modal-overlay.activo").forEach((overlay) => {
       overlay.classList.remove("activo");
@@ -110,3 +92,64 @@
 
   global.ModalUI = { mostrar, cerrarTodos };
 })(window);
+
+document.getElementById("btn-calcular-edad").addEventListener("click", () => {
+  const input = document.getElementById("fecha-nacimiento");
+  const errorMsg = document.getElementById("error-fecha");
+  const valor = input.value;
+
+  if (!valor) {
+    errorMsg.style.display = "block";
+    return;
+  }
+  errorMsg.style.display = "none";
+
+  const nacimiento = new Date(valor);
+  const hoy = new Date();
+  let edad = hoy.getFullYear() - nacimiento.getFullYear();
+  const noHaCumplidoAun =
+    hoy.getMonth() < nacimiento.getMonth() ||
+    (hoy.getMonth() === nacimiento.getMonth() && hoy.getDate() < nacimiento.getDate());
+  if (noHaCumplidoAun) edad--;
+
+  ModalUI.mostrar({
+    tag: "Resultado",
+    valor: edad + " años",
+    detalle: "Calculado a partir de tu fecha de nacimiento",
+    botones: [{ texto: "Aceptar", tipo: "primario" }]
+  });
+});
+
+document.getElementById("btn-eliminar").addEventListener("click", () => {
+  ModalUI.mostrar({
+    titulo: "¿Eliminar tu cuenta?",
+    cuerpo: "Esta acción no se puede deshacer. Perderás todo tu historial.",
+    botones: [
+      { texto: "Cancelar", tipo: "secundario" },
+      {
+        texto: "Sí, eliminar",
+        tipo: "peligro",
+        onClick: () => {
+          ModalUI.mostrar({
+            titulo: "Cuenta eliminada",
+            cuerpo: "Tu cuenta se eliminó correctamente (simulado)."
+          });
+        }
+      }
+    ]
+  });
+});
+
+document.getElementById("btn-info").addEventListener("click", () => {
+  ModalUI.mostrar({
+    tag: "Novedades",
+    titulo: "Nueva versión disponible",
+    cuerpo:
+      "<ul style='text-align:left; padding-left:18px; margin:0;'>" +
+      "<li>Soporte para modo oscuro</li>" +
+      "<li>Modal más rápido en móviles</li>" +
+      "<li>Corrección de errores menores</li>" +
+      "</ul>",
+    botones: [{ texto: "Entendido", tipo: "primario" }]
+  });
+});
