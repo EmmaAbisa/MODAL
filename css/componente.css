@@ -1,0 +1,174 @@
+/* ============================================================
+   MODAL-UI — Componente visual reutilizable
+   Librería propia: solo contiene estilos del componente Modal.
+   No sobreescribe estilos globales del sitio que lo use
+   (nada de "body" o "*" aquí, eso vive en la página que lo consume).
+   ============================================================ */
+
+/* 1. VARIABLES DEL COMPONENTE (con prefijo para no chocar con la página host) */
+.modal-ui {
+    --mui-color-primario: #927dc1;     /* Morado claro */
+    --mui-color-secundario: #4CC9F0;   /* Verde-azul */
+    --mui-color-texto: #2B2D42;        /* Texto principal */
+    --mui-color-borde: #E9ECEF;        /* Bordes sutiles */
+    --mui-color-error: #EF4444;        /* Rojo para validaciones */
+    --mui-color-gris: #6C757D;
+    --mui-color-fondo-input: #F1F3F5;
+}
+
+/* 2. OVERLAY (fondo oscuro) */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 1000;
+    font-family: 'Inter', system-ui, sans-serif;
+}
+
+.modal-overlay.activo {
+    display: flex;
+}
+
+/* 3. CAJA DEL MODAL */
+.modal-box {
+    background: #ffffff;
+    border-radius: 12px;
+    max-width: 400px;
+    width: 100%;
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+    color: var(--mui-color-texto);
+    position: relative;
+    animation: mui-aparecer 0.25s ease;
+}
+
+@keyframes mui-aparecer {
+    from { opacity: 0; transform: translateY(-12px) scale(0.98); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* 4. BOTÓN DE CERRAR (X) */
+.modal-box .modal-cerrar {
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    border: none;
+    background: transparent;
+    font-size: 20px;
+    line-height: 1;
+    color: var(--mui-color-gris);
+    cursor: pointer;
+    padding: 4px;
+}
+
+.modal-box .modal-cerrar:hover {
+    color: var(--mui-color-texto);
+}
+
+/* 5. CONTENIDO TIPO "ETIQUETA + VALOR GRANDE" (ej. resultado, edad, total, etc.) */
+.modal-box .tag {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--mui-color-primario);
+    font-weight: 600;
+}
+
+.modal-box .modal-valor {
+    font-size: 56px;
+    font-weight: 700;
+    color: var(--mui-color-texto);
+    margin: 6px 0 0;
+    line-height: 1;
+}
+
+.modal-box .detalle {
+    color: var(--mui-color-gris);
+    font-size: 13px;
+    margin: 10px 0 20px;
+}
+
+/* 6. TÍTULO Y CUERPO GENÉRICO (para modales tipo confirmación / info) */
+.modal-box .modal-titulo {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--mui-color-texto);
+}
+
+.modal-box .modal-cuerpo {
+    font-size: 14px;
+    color: var(--mui-color-gris);
+    margin-bottom: 20px;
+}
+
+/* 7. BOTONES DE ACCIÓN DENTRO DEL MODAL */
+.modal-box .modal-acciones {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.modal-box .modal-btn {
+    flex: 1;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.2s, opacity 0.2s;
+}
+
+.modal-box .modal-btn.primario {
+    background-color: var(--mui-color-primario);
+    color: #fff;
+}
+
+.modal-box .modal-btn.primario:hover {
+    opacity: 0.9;
+}
+
+.modal-box .modal-btn.secundario {
+    background-color: var(--mui-color-fondo-input);
+    color: var(--mui-color-texto);
+}
+
+.modal-box .modal-btn.secundario:hover {
+    background-color: var(--mui-color-borde);
+}
+
+.modal-box .modal-btn.peligro {
+    background-color: var(--mui-color-error);
+    color: #fff;
+}
+
+/* 8. RESPONSIVE — mobile first para pantallas pequeñas */
+@media (max-width: 480px) {
+    .modal-overlay {
+        padding: 12px;
+    }
+
+    .modal-box {
+        padding: 22px 18px;
+        border-radius: 10px;
+        max-width: 100%;
+    }
+
+    .modal-box .modal-valor {
+        font-size: 42px;
+    }
+
+    .modal-box .modal-titulo {
+        font-size: 18px;
+    }
+
+    .modal-box .modal-acciones {
+        flex-direction: column;
+    }
+}
