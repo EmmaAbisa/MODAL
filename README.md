@@ -12,7 +12,7 @@ Con `ModalUI` eso ya no pasa: es **un solo componente** al que le mandas los dat
 
 ---
 
-## 📦 Instalación
+##  Instalación
 
 Solo necesitas copiar dos archivos a tu proyecto: el CSS y el JS del componente.
 
@@ -43,7 +43,7 @@ Eso es todo, ya tienes disponible el objeto global `ModalUI` en tu página.
 
 ---
 
-## 🚀 Uso
+##  Uso
 
 El componente expone una sola función principal: `ModalUI.mostrar(opciones)`. Le mandas un objeto con lo que quieras que aparezca dentro del modal.
 
