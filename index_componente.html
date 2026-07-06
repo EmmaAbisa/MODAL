@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ModalUI — Demo del componente</title>
+
+<!-- Libre del componente -->
+<link rel="stylesheet" href="css/componente.css">
+
+<!-- Estilos SOLO de esta página de demostración sin que jale la libreira  -->
+<style>
+  :root {
+    --color-primario: #927dc1;
+    --color-secundario: #4CC9F0;
+    --color-fondo: #F8F9FA;
+    --color-texto: #2B2D42;
+    --color-borde: #E9ECEF;
+    --color-error: #EF4444;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+    line-height: 1.6;
+    padding: 40px 16px;
+  }
+
+  .pagina {
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  header.encabezado {
+    margin-bottom: 30px;
+  }
+
+  h1 {
+    font-size: 26px;
+    color: var(--color-primario);
+    margin-bottom: 8px;
+  }
+
+  .subtitulo {
+    color: #6C757D;
+    font-size: 14px;
+  }
+
+  .tarjeta {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    margin-bottom: 24px;
+  }
+
+  .tarjeta h2 {
+    font-size: 18px;
+    margin-bottom: 6px;
+  }
+
+  .tarjeta p.desc {
+    color: #6C757D;
+    font-size: 13px;
+    margin-bottom: 18px;
+  }
+
+  .grupo-formulario {
+    margin-bottom: 18px;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    font-size: 14px;
+  }
+
+  input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid var(--color-borde);
+    border-radius: 8px;
+    font-size: 16px;
+    transition: all 0.2s;
+  }
+
+  input:focus {
+    border-color: var(--color-secundario);
+    outline: none;
+    box-shadow: 0 0 3px rgba(76, 201, 240, 0.35);
+  }
+
+  .error-msg {
+    color: var(--color-error);
+    font-size: 13px;
+    margin-top: 6px;
+    display: none;
+  }
+
+  .boton-enviar {
+    width: 100%;
+    background-color: var(--color-primario);
+    color: white;
+    border: none;
+    padding: 14px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.2s, opacity 0.2s;
+  }
+
+  .boton-enviar:hover {
+    opacity: 0.9;
+  }
+
+  .boton-secundario {
+    background-color: white;
+    color: var(--color-primario);
+    border: 1px solid var(--color-primario);
+  }
+
+  footer.pie {
+    text-align: center;
+    font-size: 12px;
+    color: #6C757D;
+    margin-top: 30px;
+  }
+
+  @media (max-width: 480px) {
+    .tarjeta { padding: 22px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="pagina">
+
+  <header class="encabezado">
+    <h1>ModalUI — Componente reutilizable</h1>
+    <p class="subtitulo">Tres formas distintas de usar el mismo componente, con distinto contenido cada vez(EJEMPLOS).</p>
+  </header>
+
+  <!-- EJEMPLO 1: Modal con contenido dinámico calculado (reutilizado del de edad ejercicio del viernes creo) -->
+  <section class="tarjeta">
+    <h2>1. Calculadora de edad</h2>
+    <p class="desc">Escribe tu fecha de nacimiento y el resultado se muestra en un modal.</p>
+
+    <div class="grupo-formulario">
+      <label for="fecha-nacimiento">Fecha de nacimiento</label>
+      <input type="date" id="fecha-nacimiento">
+      <p class="error-msg" id="error-fecha">Por favor selecciona una fecha válida.</p>
+    </div>
+
+    <button class="boton-enviar" id="btn-calcular-edad">Calcular edad</button>
+  </section>
+
+  <!-- EJEMPLO 2: Modal de confirmación con botones y callbackss, como ventana emergente peor sn eso arriba feo -->
+  <section class="tarjeta">
+    <h2>2. Confirmación de acción</h2>
+    <p class="desc">El mismo componente, ahora con título, texto y dos botones.</p>
+
+    <button class="boton-enviar" id="btn-eliminar">Eliminar cuenta</button>
+  </section>
+
+  <!-- EJEMPLO 3: Modal informativo con contenido, modificable y ademas pudens er en ves de novedades diferentes cosas -->
+  <section class="tarjeta">
+    <h2>3. Aviso informativo</h2>
+    <p class="desc">Contenido totalmente distinto: una lista en vez de un número.</p>
+
+    <button class="boton-enviar boton-secundario" id="btn-info">Ver novedades</button>
+  </section>
+
+  <footer class="pie">
+    
+  </footer>
+
+</div>
+
+<!-- Librería del componente -->
+<script src="js/componente.js"></script>
+
+<script>
+  
+  // EJEMPLO 1: calcular edad y mostrarla en el modal (uso 1)
+  
+  document.getElementById("btn-calcular-edad").addEventListener("click", () => {
+    const input = document.getElementById("fecha-nacimiento");
+    const errorMsg = document.getElementById("error-fecha");
+    const valor = input.value;
+
+    if (!valor) {
+      errorMsg.style.display = "block";
+      return;
+    }
+    errorMsg.style.display = "none";
+
+    const nacimiento = new Date(valor);
+    const hoy = new Date();
+    let edad = hoy.getFullYear() - nacimiento.getFullYear();
+    const noHaCumplidoAun =
+      hoy.getMonth() < nacimiento.getMonth() ||
+      (hoy.getMonth() === nacimiento.getMonth() && hoy.getDate() < nacimiento.getDate());
+    if (noHaCumplidoAun) edad--;
+
+    ModalUI.mostrar({
+      tag: "Resultado",
+      valor: edad + " años",
+      detalle: "Calculado a partir de tu fecha de nacimiento",
+      botones: [{ texto: "Aceptar", tipo: "primario" }]
+    });
+  });
+
+  
+  // EJEMPLO 2: modal de confirmación con dos botones (uso 2)
+  
+  document.getElementById("btn-eliminar").addEventListener("click", () => {
+    ModalUI.mostrar({
+      titulo: "¿Eliminar tu cuenta?",
+      cuerpo: "Esta acción no se puede deshacer. Perderás todo tu historial.",
+      botones: [
+        { texto: "Cancelar", tipo: "secundario" },
+        {
+          texto: "Sí, eliminar",
+          tipo: "peligro",
+          onClick: () => {
+            ModalUI.mostrar({
+              titulo: "Cuenta eliminada",
+              cuerpo: "Tu cuenta se eliminó correctamente (simulado)."
+            });
+          }
+        }
+      ]
+    });
+  });
+
+  
+  // EJEMPLO 3: modal informativo con HTML libre (uso 3)
+ 
+  document.getElementById("btn-info").addEventListener("click", () => {
+    ModalUI.mostrar({
+      tag: "Novedades",
+      titulo: "Nueva versión disponible",
+      cuerpo:
+        "<ul style='text-align:left; padding-left:18px; margin:0;'>" +
+        "<li>Soporte para modo oscuro</li>" +
+        "<li>Modal más rápido en móviles</li>" +
+        "<li>Corrección de errores menores</li>" +
+        "</ul>",
+      botones: [{ texto: "Entendido", tipo: "primario" }]
+    });
+  });
+</script>
+
+</body>
+</html>
