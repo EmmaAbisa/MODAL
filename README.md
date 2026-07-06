@@ -1,5 +1,5 @@
 # ModalUI 🪟
-![alt text](image-9.png)
+![alt text](unoM.png)
 
 ## ¿Que es?
 Componente visual reutilizable hecho en **HTML + CSS + JavaScript** . Es una ventana modal (esa ventanita que aparece encima de la página con fondo oscuro) que puedes llamar las veces que quieras, con contenido totalmente distinto cada vez.
@@ -127,17 +127,17 @@ ModalUI.cerrarTodos();
 
 ##  Capturas de pantalla
 
-![alt text](image-10.png)
+![alt text](dosM.png)
 
-![alt text](image-11.png)
+![alt text](tresM.png)
 
-![alt text](image-12.png)
+![alt text](cuatroM.png)
 
-![alt text](image-13.png)
+![alt text](cincoM.png)
 
-![alt text](image-14.png)
+![alt text](seisM.png)
 
-![alt text](image-15.png)
+![alt text](sieteM.png)
 
 ---
 
